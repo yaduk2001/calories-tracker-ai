@@ -14,23 +14,30 @@ export function useStorage() {
   const [data, setData] = useState<StorageData>(defaultData);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from local storage on mount
+  // Load from API on mount
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setData(JSON.parse(stored));
-      }
-    } catch (e) {
-      console.error("Failed to load storage", e);
-    }
-    setIsLoaded(true);
+    fetch('/api/storage?key=' + STORAGE_KEY)
+      .then(res => res.json())
+      .then(res => {
+        if (res.value) {
+          setData(typeof res.value === 'string' ? JSON.parse(res.value) : res.value);
+        }
+        setIsLoaded(true);
+      })
+      .catch(e => {
+        console.error("Failed to load storage", e);
+        setIsLoaded(true);
+      });
   }, []);
 
-  // Save to local storage whenever data changes
+  // Save to API whenever data changes
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      fetch('/api/storage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: STORAGE_KEY, value: data })
+      }).catch(console.error);
     }
   }, [data, isLoaded]);
 
@@ -154,7 +161,11 @@ export function useStorage() {
 
   const clearData = () => {
     setData(defaultData);
-    localStorage.removeItem(STORAGE_KEY);
+    fetch('/api/storage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: STORAGE_KEY, value: defaultData })
+    }).catch(console.error);
   };
 
   return {

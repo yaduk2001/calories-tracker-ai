@@ -15,13 +15,14 @@ export default function Home() {
   const [theme, setTheme] = useState<ThemeConfig>({ type: "default", value: "" });
 
   useEffect(() => {
-    const saved = localStorage.getItem("diet-ai-theme");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setTheme(parsed);
-      } catch (e) { }
-    }
+    fetch('/api/storage?key=diet-ai-theme')
+      .then(res => res.json())
+      .then(res => {
+         if (res.value) {
+           setTheme(typeof res.value === 'string' ? JSON.parse(res.value) : res.value);
+         }
+      })
+      .catch((e) => {});
   }, []);
 
   useEffect(() => {
@@ -37,7 +38,11 @@ export default function Home() {
 
   const handleThemeChange = (newTheme: ThemeConfig) => {
     setTheme(newTheme);
-    localStorage.setItem("diet-ai-theme", JSON.stringify(newTheme));
+    fetch('/api/storage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: 'diet-ai-theme', value: newTheme })
+    }).catch(console.error);
   };
 
   // Derive today's string in local timezone correctly
