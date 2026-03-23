@@ -148,3 +148,14 @@
 .dot:nth-child(2) {
   animation-delay: -0.16s;
 }
+
+@media (max-width: 768px) {
+  .chatContainer {
+    padding: 0.5rem;
+  }
+  .messageBubble {
+    max-width: 95%;
+    font-size: 0.95rem;
+    padding: 0.8rem 1rem;
+  }
+}

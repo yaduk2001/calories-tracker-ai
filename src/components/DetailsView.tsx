@@ -38,7 +38,7 @@ export default function DetailsView({ dayRecord, onDeleteEvent }: DetailsViewPro
       </header>
 
       {/* Hero Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: "1.2rem", marginBottom: "2rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "1rem", marginBottom: "2rem" }}>
         <div className="glass-panel" style={{ padding: "1.5rem", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: 0, right: 0, padding: "1rem", opacity: 0.1, fontSize: "2.5rem" }}>🍔</div>
           <h3 style={{ color: "var(--text-secondary)", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "1px", fontWeight: 600 }}>Consumed</h3>
@@ -103,7 +103,7 @@ export default function DetailsView({ dayRecord, onDeleteEvent }: DetailsViewPro
                 </div>
               </div>
 
-              <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap", justifyContent: "flex-end", marginTop: "0.5rem" }}>
                 <div style={{ textAlign: "right" }}>
                   <span style={{ display: "block", fontSize: "1.3rem", fontWeight: 700, color: ev.type === "food" ? "#ef4444" : "#10b981", textShadow: `0 2px 10px ${ev.type === "food" ? "rgba(239,68,68,0.2)" : "rgba(16,185,129,0.2)"}` }}>
                     {ev.type === "food" ? "+" : "-"}{ev.calories}

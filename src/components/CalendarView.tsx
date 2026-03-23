@@ -84,10 +84,10 @@ export default function CalendarView({ daysData, onDayClick }: CalendarViewProps
               {record ? (
                 <div className={styles.stats}>
                   <div className={`${styles.statRow} ${styles.eaten}`}>
-                    <span>🥘</span> <span>{record.totalEaten} kcal</span>
+                    <span title="Eaten">🥘</span> <span>{record.totalEaten}</span>
                   </div>
                   <div className={`${styles.statRow} ${styles.burned}`}>
-                    <span>🔥</span> <span>{record.totalBurned} kcal</span>
+                    <span title="Burned">🔥</span> <span>{record.totalBurned}</span>
                   </div>
                   <div className={`${styles.statRow} ${styles.steps}`}>
                     <span>👟</span> <span>{record.totalSteps}</span>

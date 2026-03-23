@@ -13,6 +13,7 @@ export default function Home() {
   const { data, isLoaded, addMessage, processOperations, deleteEvent, clearData } = useStorage();
   const [isLoading, setIsLoading] = useState(false);
   const [theme, setTheme] = useState<ThemeConfig>({ type: "default", value: "" });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     fetch('/api/storage?key=diet-ai-theme')
@@ -109,8 +110,13 @@ export default function Home() {
 
   return (
     <div className={styles.layout}>
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div className={styles.sidebarOverlay} onClick={() => setIsSidebarOpen(false)} />
+      )}
+
       {/* Sidebar Placeholder */}
-      <aside className={styles.sidebar}>
+      <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ''}`}>
         <h2 style={{ fontSize: "1.2rem", marginBottom: "2rem", color: "var(--text-primary)" }}>
           Diet AI
         </h2>
@@ -119,7 +125,7 @@ export default function Home() {
           <button
             className={styles.toggleBtn}
             style={{ width: "100%", textAlign: "left", marginBottom: "1rem" }}
-            onClick={() => setView("chat")}
+            onClick={() => { setView("chat"); setIsSidebarOpen(false); }}
           >
             + New Chat
           </button>
@@ -142,6 +148,7 @@ export default function Home() {
                   onClick={() => {
                     setSelectedDate(dateStr);
                     setView("details");
+                    setIsSidebarOpen(false);
                   }}
                   style={{
                     padding: "0.75rem",
@@ -175,7 +182,7 @@ export default function Home() {
         <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
           <button
             className={styles.toggleBtn}
-            onClick={() => setView("settings")}
+            onClick={() => { setView("settings"); setIsSidebarOpen(false); }}
             style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", background: view === "settings" ? "rgba(255,255,255,0.1)" : "" }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
@@ -187,8 +194,17 @@ export default function Home() {
       {/* Main Content Area */}
       <main className={styles.mainContent}>
         <header className={styles.header}>
-          <div className={styles.headerTitle}>
-            {view === "chat" ? "AI Assistant" : view === "calendar" ? "Calendar Overview" : view === "settings" ? "Settings" : "Daily Details"}
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <button 
+              className={styles.hamburgerBtn}
+              onClick={() => setIsSidebarOpen(true)}
+              aria-label="Open menu"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <div className={styles.headerTitle}>
+              {view === "chat" ? "AI Assistant" : view === "calendar" ? "Calendar Overview" : view === "settings" ? "Settings" : "Daily Details"}
+            </div>
           </div>
           <button
             className={styles.toggleBtn}

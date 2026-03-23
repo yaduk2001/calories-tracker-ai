@@ -61,3 +61,54 @@
   overflow-y: auto;
   position: relative;
 }
+
+.sidebarOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+}
+
+.hamburgerBtn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    height: 100vh;
+    width: 280px;
+    max-width: 85vw;
+    transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+  }
+  
+  .sidebarOpen {
+    left: 0;
+  }
+  
+  .sidebarOverlay {
+    display: block;
+  }
+  
+  .hamburgerBtn {
+    display: block;
+  }
+
+  .header {
+    padding: 0 1rem;
+  }
+  
+  .headerTitle {
+    font-size: 1rem;
+  }
+}
